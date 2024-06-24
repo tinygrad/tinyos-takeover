@@ -3,8 +3,12 @@ all: build
 clean:
 	rm -f localhost.apkovl.tar localhost.apkovl.tar.gz
 	rm -f takeover.img.part takeover.img
+	rm -f boot/modloop-lts
 	sudo umount tmp || true
-	rmdir tmp
+	rmdir tmp || true
+
+download-boot:
+	curl -o boot/modloop-lts https://dl-cdn.alpinelinux.org/alpine/v3.19/releases/x86_64/netboot-3.19.1/modloop-lts
 
 build-apkovl:
 	# update opt/tinybox/takeover.sh inside of the tarball
@@ -15,7 +19,7 @@ build-apkovl:
 	# generate a new apkovl
 	gzip localhost.apkovl.tar
 
-build: build-apkovl
+build: download-boot build-apkovl
 	bash ./img.sh
 
 	# mount the image

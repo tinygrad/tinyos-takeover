@@ -4,7 +4,7 @@ set -x
 sleep 1
 
 # Check if the script is up to date
-if ! wget -q -O /tmp/update.sh "http://192.168.52.17:2543/takeover.sh"; then
+if ! wget -q -O /tmp/update.sh "http://192.168.52.20:2543/takeover.sh"; then
   echo "text,Failed Update" | nc -U /run/tinybox-screen.sock
   exit 1
 fi
@@ -20,7 +20,7 @@ if [ "$remote_script_hash" != "$local_script_hash" ]; then
   exit 0
 fi
 
-IMG_HOST="http://192.168.52.17:2543"
+IMG_HOST="http://192.168.52.20:2543"
 
 # system check
 EXPECTED_GPU_COUNT=6

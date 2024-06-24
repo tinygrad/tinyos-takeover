@@ -1,0 +1,8 @@
+.direnv/
+
+tmp/
+/*.gz
+*.img
+*.part
+
+boot/modloop-lts

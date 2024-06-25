@@ -135,10 +135,23 @@ sleep 1
 
 # make a tmpfs to store the image
 mkdir -p /tmp/tmp
-mount -t tmpfs -o size=32G tmpfs /tmp/tmp
+mount -t tmpfs -o size=96G tmpfs /tmp/tmp
+
+# determine which image we are downloading and flashing
+is_nvidia=$(echo "$system_info" | jq -r '.. | objects | select(.class == "display") | select(.vendor | . and contains("ASPEED") | not) | .vendor' | head -n1 | grep -i "nvidia")
+if [ -n "$is_nvidia" ]; then
+  echo "text,Downloading green Image" | nc -U /run/tinybox-screen.sock
+else
+  echo "text,Downloading red Image" | nc -U /run/tinybox-screen.sock
+fi
+sleep 1
 
 # download the os image
-wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$IMG_HOST/tinyos.img"
+if [ -n "$is_nvidia" ]; then
+  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$IMG_HOST/tinyos.green.img"
+else
+  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$IMG_HOST/tinyos.red.img"
+fi
 
 # wait until the image is downloaded
 while true; do
@@ -182,6 +195,9 @@ dd if=/tmp/tmp/tinyos.img of="$drive" bs=16M oflag=direct 2>&1 | while read -r l
   esac
 done
 pkill watch
+
+# fix the backup gpt header
+sgdisk -e "$drive"
 
 # delete previous tinyos uefi boot entries no bash
 entries="$(efibootmgr | grep -i "tinyos" | grep -oP 'Boot\d+' | grep -oP '\d+')"

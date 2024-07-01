@@ -3,6 +3,7 @@
 tmp/
 /*.gz
 *.img
+*.iso
 *.part
 
 boot/modloop-lts

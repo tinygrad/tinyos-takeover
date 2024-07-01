@@ -18,6 +18,7 @@
           nativeBuildInputs = with pkgs; [
             gnumake
             parted
+            libisoburn
           ];
         };
       }

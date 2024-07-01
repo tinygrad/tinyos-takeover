@@ -3,6 +3,7 @@ all: build
 clean:
 	rm -f localhost.apkovl.tar localhost.apkovl.tar.gz
 	rm -f takeover.img.part takeover.img
+	rm -f takeover.iso
 	rm -f boot/modloop-lts
 	sudo umount tmp || true
 	rmdir tmp || true
@@ -33,6 +34,25 @@ build: download-boot build-apkovl
 	sudo cp -r ./boot tmp/
 	sudo cp -r ./cache tmp/
 	sudo cp -r ./efi tmp/
+
+	sudo umount tmp
+
+iso:
+	mkdir -p tmp
+	sudo mount -o loop,offset=1048576 takeover.img tmp
+
+	xorriso -as mkisofs -o takeover.iso -r -V "takeover" \
+		-J -joliet-long \
+		-b boot/syslinux/isolinux.bin \
+		-c boot/syslinux/boot.cat \
+		-no-emul-boot \
+		-boot-load-size 4 \
+		-boot-info-table \
+		-eltorito-alt-boot \
+		-e boot/grub/efi.img \
+		-no-emul-boot \
+		-isohybrid-gpt-basdat \
+		tmp
 
 	sudo umount tmp
 

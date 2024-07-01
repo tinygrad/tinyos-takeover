@@ -37,7 +37,7 @@ build: download-boot build-apkovl
 
 	sudo umount tmp
 
-iso:
+iso: build
 	mkdir -p tmp
 	sudo mount -o loop,offset=1048576 takeover.img tmp
 

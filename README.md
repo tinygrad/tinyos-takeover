@@ -12,3 +12,11 @@ sudo apt install -y parted build-essential
 ```bash
 make
 ```
+
+or
+
+```bash
+make iso
+```
+
+to build an iso that can be loaded over the BMC.

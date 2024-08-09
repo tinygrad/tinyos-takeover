@@ -3,8 +3,21 @@ set -x
 
 sleep 1
 
+# list of hosts to check for updates
+UPDATE_URLS="http://192.168.52.20:2543/takeover.sh https://raw.githubusercontent.com/tinygrad/tinyos-takeover/main/apkovl/opt/tinybox/takeover.sh"
+# list of hosts to fetch the image from
+IMG_HOSTS="http://192.168.52.20:2543"
+
 # Check if the script is up to date
-if ! wget -q -O /tmp/update.sh "http://192.168.52.20:2543/takeover.sh"; then
+success=0
+for url in $UPDATE_URLS; do
+  if wget -q -O /tmp/update.sh "$url"; then
+    success=1
+    break
+  fi
+done
+
+if [ "$success" -eq 0 ]; then
   echo "text,Failed Update" | nc -U /run/tinybox-screen.sock
   exit 1
 fi
@@ -19,8 +32,6 @@ if [ "$remote_script_hash" != "$local_script_hash" ]; then
   exec /opt/tinybox/takeover.sh "$@"
   exit 0
 fi
-
-IMG_HOST="http://192.168.52.20:2543"
 
 # system check
 EXPECTED_GPU_COUNT=6
@@ -147,10 +158,26 @@ fi
 sleep 1
 
 # download the os image
-if [ -n "$is_nvidia" ]; then
-  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$IMG_HOST/tinyos.green.img"
+# first find a host that is accessible and that has both images
+selected_host=""
+for host in $IMG_HOSTS; do
+  if wget -q --spider "$host/tinyos.green.img" && wget -q --spider "$host/tinyos.red.img"; then
+    selected_host="$host"
+    break
+  fi
+done
+
+if [ -z "$selected_host" ]; then
+  echo "text,No Host Found" | nc -U /run/tinybox-screen.sock
+  exit 1
 else
-  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$IMG_HOST/tinyos.red.img"
+  echo "text,Using Host,$selected_host" | nc -U /run/tinybox-screen.sock
+fi
+
+if [ -n "$is_nvidia" ]; then
+  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$selected_host/tinyos.green.img"
+else
+  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$selected_host/tinyos.red.img"
 fi
 
 # wait until the image is downloaded

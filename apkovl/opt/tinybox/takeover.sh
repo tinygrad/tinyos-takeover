@@ -4,7 +4,7 @@ set -x
 sleep 1
 
 # list of hosts to check for updates
-UPDATE_URLS="http://192.168.52.20:2543/takeover.sh https://raw.githubusercontent.com/tinygrad/tinyos-takeover/main/apkovl/opt/tinybox/takeover.sh"
+UPDATE_URLS="http://192.168.52.20:2543/takeover.internal.sh"
 # list of hosts to fetch the image from
 IMG_HOSTS="http://192.168.52.20:2543"
 
@@ -161,7 +161,7 @@ sleep 1
 # first find a host that is accessible and that has both images
 selected_host=""
 for host in $IMG_HOSTS; do
-  if wget -q --spider "$host/tinyos.green.img" && wget -q --spider "$host/tinyos.red.img"; then
+  if wget -q --spider "$host/tinyos.green.internal.img" && wget -q --spider "$host/tinyos.red.internal.img"; then
     selected_host="$host"
     break
   fi
@@ -175,9 +175,9 @@ else
 fi
 
 if [ -n "$is_nvidia" ]; then
-  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$selected_host/tinyos.green.img"
+  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$selected_host/tinyos.green.internal.img"
 else
-  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$selected_host/tinyos.red.img"
+  wget -b -o /tmp/log -O /tmp/tmp/tinyos.img "$selected_host/tinyos.red.internal.img"
 fi
 
 # wait until the image is downloaded

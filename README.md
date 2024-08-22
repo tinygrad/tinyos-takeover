@@ -20,3 +20,5 @@ make iso
 ```
 
 to build an iso that can be loaded over the BMC.
+
+the takeover image will fetch for an image from a http server, and flash it to the tinybox after doing some checks.

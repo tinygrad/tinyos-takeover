@@ -1,0 +1,11 @@
+#!/sbin/openrc-run
+
+depends() {
+	after displayservice
+}
+
+pidfile="/run/${RC_SVCNAME}.pid"
+
+start() {
+    /opt/tinybox/takeover.sh &> /dev/console &
+}

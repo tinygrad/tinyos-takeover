@@ -17,6 +17,7 @@ build-apkovl:
 	gzip -d localhost.apkovl.tar.gz
 	pushd apkovl && tar -uf ../localhost.apkovl.tar etc/network/interfaces --owner=0 --group=0
 	pushd apkovl && tar -uf ../localhost.apkovl.tar opt/tinybox/takeover.sh --owner=0 --group=0
+	pushd apkovl && tar -uf ../localhost.apkovl.tar etc/init.d/takeover --owner=0 --group=0
 	# generate a new apkovl
 	gzip localhost.apkovl.tar
 

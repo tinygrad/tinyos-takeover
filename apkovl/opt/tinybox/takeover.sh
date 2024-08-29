@@ -4,9 +4,9 @@ set -x
 sleep 1
 
 # list of hosts to check for updates
-UPDATE_URLS="http://192.168.52.20:2543/takeover.sh https://raw.githubusercontent.com/tinygrad/tinyos-takeover/main/apkovl/opt/tinybox/takeover.sh"
+UPDATE_URLS="http://192.168.52.20:2543/takeover.sh http://192.168.52.16:2543/takeover.sh https://raw.githubusercontent.com/tinygrad/tinyos-takeover/main/apkovl/opt/tinybox/takeover.sh"
 # list of hosts to fetch the image from
-IMG_HOSTS="http://192.168.52.20:2543"
+IMG_HOSTS="http://192.168.52.20:2543 http://192.168.52.16:2543"
 
 # Check if the script is up to date
 success=0

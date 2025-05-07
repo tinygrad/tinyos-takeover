@@ -35,6 +35,7 @@ fi
 
 # system check
 EXPECTED_GPU_COUNT=6
+EXPECTED_GPU_COUNT_GREENV2=4
 EXPECTED_GPU_LINK_SPEED="16GT/s"
 EXPECTED_GPU_LINK_WIDTH="x16"
 EXPECTED_MEMORY_SIZE_GB=128
@@ -50,7 +51,7 @@ system_info="$(lshw -json)"
 gpu_busids="$(echo "$system_info" | jq -r '.. | objects | select(.class == "display") | select(.vendor | . and contains("ASPEED") | not) | .businfo | .[4:]')"
 gpu_count=$(echo "$gpu_busids" | wc -l)
 echo "text,Found $gpu_count GPUs" | nc -U /run/tinybox-screen.sock
-if [ "$gpu_count" -ne "$EXPECTED_GPU_COUNT" ]; then
+if [ "$gpu_count" -ne "$EXPECTED_GPU_COUNT" ] && [ "$gpu_count" -ne "$EXPECTED_GPU_COUNT_GREENV2" ]; then
   echo "text,GPU Count should be ${EXPECTED_GPU_COUNT},is $gpu_count" | nc -U /run/tinybox-screen.sock
   exit 1
 fi

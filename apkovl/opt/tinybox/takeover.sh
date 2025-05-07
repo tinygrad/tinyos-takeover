@@ -36,7 +36,8 @@ fi
 # system check
 EXPECTED_GPU_COUNT=6
 EXPECTED_GPU_COUNT_GREENV2=4
-EXPECTED_GPU_LINK_SPEED="16GT/s"
+EXPECTED_GPU_LINK_SPEED_GEN4="16GT/s"
+EXPECTED_GPU_LINK_SPEED_GEN5="32GT/s"
 EXPECTED_GPU_LINK_WIDTH="x16"
 EXPECTED_MEMORY_SIZE_GB=128
 EXPECTED_CORE_COUNT=32
@@ -52,7 +53,7 @@ gpu_busids="$(echo "$system_info" | jq -r '.. | objects | select(.class == "disp
 gpu_count=$(echo "$gpu_busids" | wc -l)
 echo "text,Found $gpu_count GPUs" | nc -U /run/tinybox-screen.sock
 if [ "$gpu_count" -ne "$EXPECTED_GPU_COUNT" ] && [ "$gpu_count" -ne "$EXPECTED_GPU_COUNT_GREENV2" ]; then
-  echo "text,GPU Count should be ${EXPECTED_GPU_COUNT},is $gpu_count" | nc -U /run/tinybox-screen.sock
+  echo "text,GPU Count should be ${EXPECTED_GPU_COUNT}/${EXPECTED_GPU_COUNT_GREENV2},is $gpu_count" | nc -U /run/tinybox-screen.sock
   exit 1
 fi
 i=0
@@ -60,8 +61,8 @@ for busid in $gpu_busids; do
   echo "text,Checking GPU $i,$busid" | nc -U /run/tinybox-screen.sock
 
   link_speed=$(lspci -vv -s "$busid" | grep "LnkCap:" | grep -oP 'Speed \d+GT/s' | grep -oP '\d+GT/s')
-  if [ "$link_speed" != "$EXPECTED_GPU_LINK_SPEED" ]; then
-    echo "text,$busid - GPU $i,not at $EXPECTED_GPU_LINK_SPEED,at $link_speed" | nc -U /run/tinybox-screen.sock
+  if [ "$link_speed" != "$EXPECTED_GPU_LINK_SPEED_GEN4" ] && [ "$link_speed" != "$EXPECTED_GPU_LINK_SPEED_GEN5" ]; then
+    echo "text,$busid - GPU $i,not at $EXPECTED_GPU_LINK_SPEED_GEN4/$EXPECTED_GPU_LINK_SPEED_GEN5,at $link_speed" | nc -U /run/tinybox-screen.sock
     exit 1
   fi
   link_width=$(lspci -vv -s "$busid" | grep "LnkCap:" | grep -oP 'Width x\d+' | grep -oP 'x\d+')

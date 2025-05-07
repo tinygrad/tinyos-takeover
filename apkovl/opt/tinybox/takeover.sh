@@ -40,6 +40,7 @@ EXPECTED_GPU_LINK_SPEED_GEN4="16GT/s"
 EXPECTED_GPU_LINK_SPEED_GEN5="32GT/s"
 EXPECTED_GPU_LINK_WIDTH="x16"
 EXPECTED_MEMORY_SIZE_GB=128
+EXPECTED_MEMORY_SIZE_GB_GREENV2=192
 EXPECTED_CORE_COUNT=32
 EXPECTED_DRIVE_COUNT=4
 EXPECTED_DRIVE_LINK_SPEED="16GT/s"
@@ -84,8 +85,8 @@ done
 memory_size=$(echo "$system_info" | jq -r '.. | objects | select(.id == "memory") | .size')
 memory_size_gb=$(echo "$memory_size" | awk '{print int($1/1024/1024/1024)}')
 echo "text,Found $memory_size_gb GB" | nc -U /run/tinybox-screen.sock
-if [ "$memory_size_gb" -ne "$EXPECTED_MEMORY_SIZE_GB" ]; then
-  echo "text,Memory should be ${EXPECTED_MEMORY_SIZE_GB} GB,is $memory_size_gb GB" | nc -U /run/tinybox-screen.sock
+if [ "$memory_size_gb" -ne "$EXPECTED_MEMORY_SIZE_GB" ] && [ "$memory_size_gb" -ne "$EXPECTED_MEMORY_SIZE_GB_GREENV2" ]; then
+  echo "text,Memory should be ${EXPECTED_MEMORY_SIZE_GB}/$EXPECTED_MEMORY_SIZE_GB_GREENV2 GB,is $memory_size_gb GB" | nc -U /run/tinybox-screen.sock
   exit 1
 fi
 

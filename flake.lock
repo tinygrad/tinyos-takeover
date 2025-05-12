@@ -18,6 +18,24 @@
         "type": "github"
       }
     },
+    "flake-utils_2": {
+      "inputs": {
+        "systems": "systems_2"
+      },
+      "locked": {
+        "lastModified": 1710146030,
+        "narHash": "sha256-SZ5L6eA7HJ/nmkzGG7/ISclqe6oZdOZTNoesiInkXPQ=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "b1d9ab70662946ef0850d488da1c9019f3a9752a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1717112898,
@@ -34,10 +52,28 @@
         "type": "github"
       }
     },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1714562304,
+        "narHash": "sha256-Mr3U37Rh6tH0FbaDFu0aZDwk9mPAe7ASaqDOGgLqqLU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "bcd44e224fd68ce7d269b4f44d24c2220fd821e7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "flake-utils": "flake-utils",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "tinyos": "tinyos",
+        "tinyturing": "tinyturing"
       }
     },
     "systems": {
@@ -52,6 +88,57 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "systems_2": {
+      "locked": {
+        "lastModified": 1681028828,
+        "narHash": "sha256-Vy1rq5AaRuLzOxct8nz4T6wlgyUR7zLU309k9mBC768=",
+        "owner": "nix-systems",
+        "repo": "default",
+        "rev": "da67096a3b9bf56a91d16901293e51ba5b49a27e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-systems",
+        "repo": "default",
+        "type": "github"
+      }
+    },
+    "tinyos": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1746996572,
+        "narHash": "sha256-9lhtZJl7PGFoWBunzqFcp8cfit2OX0qUpk2DH8jUsGA=",
+        "owner": "tinygrad",
+        "repo": "tinyos",
+        "rev": "51a7f1f758d2b66a0a2ae2360e6a6fb4f96ce309",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tinygrad",
+        "ref": "dev",
+        "repo": "tinyos",
+        "type": "github"
+      }
+    },
+    "tinyturing": {
+      "inputs": {
+        "flake-utils": "flake-utils_2",
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1746996564,
+        "narHash": "sha256-L3+2OZMIcHSafZdfnUxwFlPzZZyCfWBxgzC/4OoLEk4=",
+        "owner": "tinygrad",
+        "repo": "tinyturing",
+        "rev": "b7b365e8b7a5cc69635c5fa890060e8f24cfda89",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tinygrad",
+        "repo": "tinyturing",
         "type": "github"
       }
     }

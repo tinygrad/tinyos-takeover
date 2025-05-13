@@ -281,7 +281,7 @@ in
       sgdisk -e "$drive"
 
       # delete previous tinyos uefi boot entries no bash
-      entries="$(efibootmgr | grep -i "tinyos" | grep -oP 'Boot\d+' | grep -oP '\d+')"
+      entries="$(efibootmgr | grep -i "tinyos" | grep -oP 'Boot\d+' | grep -oP '\d+' || echo "")"
       for entry in $entries; do
         efibootmgr -b "$entry" -B
       done

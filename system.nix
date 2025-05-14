@@ -212,6 +212,12 @@ in
       display_text "downloading,$image_name"
       sleep 1
 
+      # sanity check, if we aren't writing tinyos.core.img we can't be writing to nvme0n1
+      if [ "$image_name" != "tinyos.core.img" ] && [ "$drive" = "/dev/nvme0n1" ]; then
+        display_text "cannot write,$image_name to $drive"
+        exit 1
+      fi
+
       # download the os image
       # first find a host that is accessible and that has both images
       selected_host=""

@@ -197,7 +197,7 @@ in
       sleep 1
 
       mkdir -p /tmp/tmp
-      mount -t tmpfs -o size=96G tmpfs /tmp/tmp
+      mount -t tmpfs -o size=112G tmpfs /tmp/tmp
 
       IMG_HOSTS="http://192.168.52.20:2543 http://192.168.52.16:2543"
 

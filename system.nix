@@ -25,14 +25,11 @@ in
 
   # *** netboot config
 
-  system.build.netboot = pkgs.symlinkJoin {
-    name = "netboot";
-    paths = with config.system.build; [
-      initialRamdisk
-      kernel
-    ];
-    preferLocalBuild = true;
-  };
+  system.build.netboot = pkgs.runCommandLocal "netboot" { } ''
+    mkdir -p $out
+    ln -s ${config.system.build.kernel}/bzImage $out/bzImage
+    ln -s ${config.system.build.initialRamdisk}/initrd $out/initrd
+  '';
 
   # *** initrd config
 
@@ -199,7 +196,7 @@ in
       mkdir -p /tmp/tmp
       mount -t tmpfs -o size=112G tmpfs /tmp/tmp
 
-      IMG_HOSTS="http://192.168.52.20:2543 http://192.168.52.16:2543"
+      IMG_HOSTS="http://192.168.52.180:11001/tinyos"
 
       # determine which image we are downloading and flashing
       image_name="tinyos.core.img"
@@ -211,12 +208,6 @@ in
       fi
       display_text "downloading,$image_name"
       sleep 1
-
-      # sanity check, if we aren't writing tinyos.core.img we can't be writing to nvme0n1
-      if [ "$image_name" != "tinyos.core.img" ] && [ "$drive" = "/dev/nvme0n1" ]; then
-        display_text "cannot write,$image_name to $drive"
-        exit 1
-      fi
 
       # download the os image
       # first find a host that is accessible and that has both images

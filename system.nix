@@ -31,6 +31,9 @@ in
     ln -s ${config.system.build.initialRamdisk}/initrd $out/initrd
   '';
 
+  # *** kernel config
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # *** initrd config
 
   boot.initrd.systemd.enable = true;
@@ -203,7 +206,7 @@ in
       # see if any pci devices have NVIDIA
       if lspci | grep -q "NVIDIA"; then
         image_name="tinyos.green.img"
-      elif lspci | grep -q "Radeon"; then
+      elif lspci | grep -qe "VGA.*AMD/ATI"; then
         image_name="tinyos.red.img"
       fi
       display_text "downloading,$image_name"

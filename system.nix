@@ -106,6 +106,7 @@ in
     efibootmgr = "${pkgs.efibootmgr}/bin/efibootmgr";
     ipmitool = "${pkgs.ipmitool}/bin/ipmitool";
     grep = "${pkgs.gnugrep}/bin/grep";
+    mdadm = "${pkgs.mdadm}/bin/mdadm";
 
     # busybox
     busybox = "${pkgs.busybox}/bin/busybox";
@@ -190,6 +191,12 @@ in
 
       if [ -z "$drive" ]; then
         display_text "no drive found"
+        exit 1
+      fi
+
+      # see if the drive is used for a mdraid
+      if mdadm --examine "$drive" | grep -q "Raid"; then
+        display_text "drive is part of a raid"
         exit 1
       fi
 

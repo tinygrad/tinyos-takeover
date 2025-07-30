@@ -219,6 +219,12 @@ in
       display_text "downloading,$image_name"
       sleep 1
 
+      # we can't write tinyos green image to nvme drives
+      if [[ "$image_name" == "tinyos.green.img" && "$drive" == /dev/nvme* ]]; then
+        display_text "can't flash to nvme,reboot box"
+        exit 1
+      fi
+
       # download the os image
       # first find a host that is accessible and that has both images
       selected_host=""
